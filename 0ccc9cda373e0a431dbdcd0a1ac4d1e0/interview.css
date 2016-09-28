@@ -1,0 +1,44 @@
+
+body {
+	color: #87CEEB;
+}
+
+/* To align "No Box" to center */
+div:first-of-type {
+	text-align: center;
+}
+
+/* To assign background color, border, height, width, margin and align text to center 
+for elements with id's box1, box2, box3 */
+#box1,#box2,#box3 {
+	background-color: #FFA500;
+	border:solid 3px #0000FF;
+	height:150px;
+	width:150px;
+	margin:50px;
+	text-align:center;
+
+}
+
+/* To assign inner box shadow and font-color to black for element with id "box1" */
+#box1 {
+	color: black;
+	box-shadow: 10px 10px #996300 inset;
+}
+
+/* To assign font-color to red for element with id "box2" */
+#box2 {
+	color: red;
+	
+}
+
+/* To assign font-color to blue for element with id "box3" */
+#box3 {
+	color: blue;
+}
+
+/* To assign border radius and box shadow for elements with class "box" */
+.box {
+	border-radius:10px;
+	box-shadow: 10px 10px #999999;
+}
