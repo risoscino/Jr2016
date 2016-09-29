@@ -1,0 +1,39 @@
+body{
+    width: 942px;
+    font-family: "arial";
+    color: #87ceeb;
+}
+h1{
+    font-size:2.4em;
+}
+h2{
+    font-size:1.1em;
+}
+p{
+    font-size:.8em;    
+}
+body div span{
+    display: block;
+    text-align: center;
+    font-size:.8em;    
+}
+#box1,.box{
+    margin:80px 40px;
+    width: 110px;
+    height: 110px;
+    border: 3px blue solid;
+    box-shadow: 7px 7px #996300 inset;
+    background-color: #ffa500;
+    text-align: center;
+    color: black;
+}
+.box{
+    border-radius: 15px;
+    box-shadow: 8px 8px #999999;
+}
+#box2{
+    color: red;
+}
+#box3{
+    color: blue;
+}

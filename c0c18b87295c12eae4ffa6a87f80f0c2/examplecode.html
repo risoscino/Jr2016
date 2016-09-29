@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Space shooter</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="css/styles.css" type="text/css" charset="utf-8" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="headerTab" id="player1" >Player 1(You)</div>
+			<div class="headerTab" id="score">Highest Score: 0 </div>
+			<!--- Plan to make this into a muilplayer using nodejs in the future-->   
+			<!---<div class="headerTab">Player 2</div>
+			<div class="headerTab">Player 3</div>-->
+			<!---<div class="headerTab">TEST</div>
+			<div class="headerTab">TEST</div>--->
+		</div>
+		<div class="dim"> Loading ...</div>
+		<div class="leftCorner"></div>
+		<div class="topCenter"></div>
+		<div class="leftVertical"></div>
+		<div class="bottomLeft"></div>
+		<div class="bottomCenter"></div>
+		<div class="bottomRight"></div>
+		<div class="topRight"></div>
+		<div class="healthBar"> <div class="healthLabel">100%</div></div>
+
+		<script src="js/three.min.js"></script>
+		<script src="js/loaders/OBJLoader.js"></script>
+		<script src="js/libs/stats.min.js"></script>
+		<script src="js/libs/tween.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+		<!-- load the font file from canvas-text -->
+		<!--- Start Shader--->
+		<script src="fonts/helvetiker_regular.typeface.js"></script>
+		<script type="x-shader/x-vertex" id="vertexshaderExposion">
+		//
+		// GLSL textureless classic 3D noise "cnoise",
+		// with an RSL-style periodic variant "pnoise".
+		// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
+		// Version: 2011-10-11
+		//
+		// Many thanks to Ian McEwan of Ashima Arts for the
+		// ideas for permutation and gradient selection.
+		//
+		// Copyright (c) 2011 Stefan Gustavson. All rights reserved.
+		// Distributed under the MIT license. See LICENSE file.
+		// https://github.com/ashima/webgl-noise
+		//
+
+		vec3 mod289(vec3 x)
+		{
+		  return x - floor(x * (1.0 / 289.0)) * 289.0;
+		}
+
+		vec4 mod289(vec4 x)
+		{
+		  return x - floor(x * (1.0 / 289.0)) * 289.0;
+		}
+
+		vec4 permute(vec4 x)
+		{
+		  return mod289(((x*34.0)+1.0)*x);
+		}
+
+		vec4 taylorInvSqrt(vec4 r)
+		{
+		  return 1.79284291400159 - 0.85373472095314 * r;
+		}
+
+		vec3 fade(vec3 t) {
+		  return t*t*t*(t*(t*6.0-15.0)+10.0);
+		}
+
+		// Classic Perlin noise
+		float cnoise(vec3 P)
+		{
+		  vec3 Pi0 = floor(P); // Integer part for indexing
+		  vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
+		  Pi0 = mod289(Pi0);
+		  Pi1 = mod289(Pi1);
+		  vec3 Pf0 = fract(P); // Fractional part for interpolation
+		  vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+		  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+		  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+		  vec4 iz0 = Pi0.zzzz;
+		  vec4 iz1 = Pi1.zzzz;
+
+		  vec4 ixy = permute(permute(ix) + iy);
+		  vec4 ixy0 = permute(ixy + iz0);
+		  vec4 ixy1 = permute(ixy + iz1);
+
+		  vec4 gx0 = ixy0 * (1.0 / 7.0);
+		  vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+		  gx0 = fract(gx0);
+		  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+		  vec4 sz0 = step(gz0, vec4(0.0));
+		  gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+		  gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+		  vec4 gx1 = ixy1 * (1.0 / 7.0);
+		  vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+		  gx1 = fract(gx1);
+		  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+		  vec4 sz1 = step(gz1, vec4(0.0));
+		  gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+		  gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+		  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+		  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+		  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+		  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+		  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+		  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+		  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+		  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+		  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+		  g000 *= norm0.x;
+		  g010 *= norm0.y;
+		  g100 *= norm0.z;
+		  g110 *= norm0.w;
+		  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+		  g001 *= norm1.x;
+		  g011 *= norm1.y;
+		  g101 *= norm1.z;
+		  g111 *= norm1.w;
+
+		  float n000 = dot(g000, Pf0);
+		  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+		  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+		  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+		  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+		  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+		  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+		  float n111 = dot(g111, Pf1);
+
+		  vec3 fade_xyz = fade(Pf0);
+		  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+		  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+		  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+		  return 2.2 * n_xyz;
+		}
+
+		// Classic Perlin noise, periodic variant
+		float pnoise(vec3 P, vec3 rep)
+		{
+		  vec3 Pi0 = mod(floor(P), rep); // Integer part, modulo period
+		  vec3 Pi1 = mod(Pi0 + vec3(1.0), rep); // Integer part + 1, mod period
+		  Pi0 = mod289(Pi0);
+		  Pi1 = mod289(Pi1);
+		  vec3 Pf0 = fract(P); // Fractional part for interpolation
+		  vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+		  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+		  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+		  vec4 iz0 = Pi0.zzzz;
+		  vec4 iz1 = Pi1.zzzz;
+
+		  vec4 ixy = permute(permute(ix) + iy);
+		  vec4 ixy0 = permute(ixy + iz0);
+		  vec4 ixy1 = permute(ixy + iz1);
+
+		  vec4 gx0 = ixy0 * (1.0 / 7.0);
+		  vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
+		  gx0 = fract(gx0);
+		  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+		  vec4 sz0 = step(gz0, vec4(0.0));
+		  gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+		  gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+		  vec4 gx1 = ixy1 * (1.0 / 7.0);
+		  vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
+		  gx1 = fract(gx1);
+		  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+		  vec4 sz1 = step(gz1, vec4(0.0));
+		  gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+		  gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+		  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+		  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+		  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+		  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+		  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+		  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+		  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+		  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+		  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+		  g000 *= norm0.x;
+		  g010 *= norm0.y;
+		  g100 *= norm0.z;
+		  g110 *= norm0.w;
+		  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+		  g001 *= norm1.x;
+		  g011 *= norm1.y;
+		  g101 *= norm1.z;
+		  g111 *= norm1.w;
+
+		  float n000 = dot(g000, Pf0);
+		  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+		  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+		  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+		  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+		  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+		  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+		  float n111 = dot(g111, Pf1);
+
+		  vec3 fade_xyz = fade(Pf0);
+		  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+		  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+		  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
+		  return 2.2 * n_xyz;
+		}
+
+		// Include the Ashima code here!
+		 
+		varying vec2 vUv;
+		varying float noise;
+		uniform float time;
+
+		float turbulence( vec3 p ) {
+		  float w = 100.0;
+		  float t = -.5;
+		  for (float f = 1.0 ; f <= 10.0 ; f++ ){
+			float power = pow( 2.0, f );
+			t += abs( pnoise( vec3( power * p ), vec3( 10.0, 10.0, 10.0 ) ) / power );
+		  }
+		  return t;
+		}
+
+		void main() {
+		  vUv = uv;
+		  noise = 10.0 *  -.10 * turbulence( .5 * normal + time );
+		  float b = 5.0 * pnoise( 0.05 * position + vec3( 2.0 * time ), vec3( 100.0 ) );
+		  float displacement = - 10. * noise + b;
+		  
+		  vec3 newPosition = position + normal * displacement;
+		  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+		}
+		</script>
+		 
+		<script type="x-shader/x-vertex" id="fragmentshaderExopsion">
+			varying vec2 vUv;
+			varying float noise;
+			uniform sampler2D tExplosion;
+
+			float random( vec3 scale, float seed ){
+			  return fract( sin( dot( gl_FragCoord.xyz + seed, scale ) ) * 43758.5453 + seed ) ;
+			}
+
+			void main() {
+
+			  float r = .01 * random( vec3( 12.9898, 78.233, 151.7182 ), 0.0 );
+			  vec2 tPos = vec2( 0, 1.5* noise + r );
+			  vec4 color = texture2D( tExplosion, tPos );
+			  gl_FragColor = vec4( color.rgb, 1.0 );
+
+			}
+		</script>
+		<!--- End Shader-->
+		
+		<!--- Scene Code 
+        Other than the code on the shader, the code are written by me Wai Chan
+        -->
+		<script>
+			var container, stats;
+			var camera, scene, renderer,skybox,playerEntity,spaceFighter,particles, thrustGeometry,  thrustMaterial, i, h, color, colors = [], sprite, size,particlesArray=[];
+			var text, plane;
+			var speed = 10;
+			var timer;
+			var numberOfEnemy = 3;
+			
+			var expl= false;
+			var pointLight;
+			var targetRotation = 0;
+			var targetRotationOnMouseDown = 0;
+			var mouseX = 0;
+			var mouseXOnMouseDown = 0;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+			var delta = 1, clock = new THREE.Clock();
+			var _rotation = 0;
+			var timeOnShapePath = 0;
+			var composer;
+			var effectBlurX, effectBlurY, hblur, vblur;
+			var urlPrefix = "images/";
+			var bullets = [];
+			var Ebullets = [];
+			var _EnemyList = [],_EnemyListObject3D=[];
+			var EnemyFighterMesh;
+			var expMesh ;
+			var sphereGeo = new THREE.CubeGeometry(10, 10,20,1,1,1 );
+			var expList = [];
+			
+			var EnemyTexture = new THREE.Texture();
+			var hit =false;
+			var start = Date.now();
+			var particle;
+			var score = 0; 
+			var highestScore = 0;
+			var bulletTexture=THREE.ImageUtils.loadTexture("images/particle5.png");
+			var EnemyMaterial = new THREE.MeshLambertMaterial( {  color: 0xffffff, map: EnemyTexture } );
+		//	var bulletMaterial =new THREE.MeshBasicMaterial({	map: THREE.ImageUtils.loadTexture("images/particle3.png"),transparent: true,opacity: 1 });
+			var bulletMaterialE =new THREE.MeshBasicMaterial({	map: THREE.ImageUtils.loadTexture("images/particle4.png"),transparent: true,opacity: 1 });
+			
+			var bulletMaterial = 	new THREE.MeshBasicMaterial({size: 600, map:bulletTexture ,blending: THREE.AdditiveBlending,
+						depthTest: false,
+						transparent: true,
+						vertexColors: true });
+			var explosionMaterial;
+			init();
+			animate();
+			
+			function init() {
+				//in 2 second set player health to -10 to preload explosion
+				setTimeout(function () {
+					if(playerEntity!=null){
+						playerEntity.health= -10;
+					}
+				}, 2000);
+			
+				// Remove loading screen in 5 second 
+				setTimeout(function () {
+					$("div.dim").css("display","none");
+					if(playerEntity!=null){
+						playerEntity.health= 100;
+					}
+				}, 5000);
+			
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				// CAMERA
+				camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 500, 10000 );
+				camera.position.set( 0, 150, 500 );
+		
+				// SCENE
+				scene = new THREE.Scene();
+				
+				//Create Parent Group
+				parent = new THREE.Object3D();
+				scene.add( parent );
+				
+				// LIGHTS
+				var directionalLight = new THREE.DirectionalLight( 0xffffff, 5 );
+				directionalLight.position.set( 0, -1, 1 );
+				directionalLight.position.normalize();
+				scene.add( directionalLight );
+
+				/*pointLight = new THREE.PointLight( 0xffffff, 2, 300 );
+				pointLight.position.set( 0, 0, 0 );
+				scene.add( pointLight );*/
+
+				//Create space skybox actually it is two cylinder rolling on the side with different speed 
+				//@TODO change texture size based on resolution
+				//"skybox_full_30.jpg", "skybox_full_60.jpg", "skybox_full_80.jpg"
+				var url = urlPrefix + "skybox_full_30.jpg"; 
+				var texture = THREE.ImageUtils.loadTexture( url );
+				var shader = THREE.ShaderLib[ "cube" ];
+				shader.uniforms[ "tCube" ].value = texture;
+
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+				var materialTop = new THREE.MeshBasicMaterial( { map: texture  ,transparent: true, opacity: .2 } );
+				material.side = THREE.BackSide;
+				materialTop.side = THREE.BackSide;
+				
+				var skybox = new THREE.Mesh(new THREE.CylinderGeometry(1100, 1100, 1900, 8, 8, true),  material);
+				skybox.position.x = 0;
+				skybox.position.y = 0;
+				skybox.position.z = 0;
+				skybox.rotation.z =1.5708;
+				skybox.name="skybox";
+		
+				var skyboxTop = new THREE.Mesh(new THREE.CylinderGeometry(1000, 1000, 1900, 50, 50, true),  materialTop);
+				skyboxTop.position.x = 0;
+				skyboxTop.position.y = 0;
+				skyboxTop.position.z = 0;
+				skyboxTop.rotation.z =1.5708;
+				skyboxTop.name="skyboxTop";
+		
+				parent.add(skybox);
+				parent.add(skyboxTop);
+				
+				
+				//Fighters
+				spawnPlayer();
+				
+				var loader = new THREE.ImageLoader();
+				loader.addEventListener( 'load', function ( event ) {
+					EnemyTexture.image = event.content;
+					EnemyTexture.needsUpdate = true;
+				} );
+				loader.load( 'models/F02_512.jpg' );
+				
+				var loader = new THREE.OBJLoader();
+				loader.addEventListener( 'load', function ( event ) {
+					//console.log(event);
+					var object = event.content;
+					object.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							EnemyFighterMesh = child;
+							child.material.map = EnemyTexture;
+						}
+					} );
+				});
+				loader.load( 'models/enemyspaceship.obj' );
+				
+				//explosion object
+				// create a wireframe material      
+				
+				explosionMaterial = new THREE.ShaderMaterial( {
+					uniforms: { 
+						tExplosion: { // texture in slot 0, loaded with ImageUtils
+							type: "t", 
+							value: THREE.ImageUtils.loadTexture( 'images/explosion.png' )
+						}
+						,
+						time: { // float initialized to 0
+							type: "f", 
+							value: 0.0 
+						}
+					},
+					
+					vertexShader: document.getElementById( 'vertexshaderExposion' ).textContent,
+					fragmentShader: document.getElementById( 'fragmentshaderExopsion' ).textContent
+				} );
+			
+		
+				 expMesh = new THREE.Mesh( 
+			        new THREE.IcosahedronGeometry( 7, 3 ), 
+					explosionMaterial 
+			    );
+				
+				expMesh.scale.set(0,0,0);
+			    //scene.add(expMesh );
+		
+				thrustGeometry = new THREE.Geometry();
+				sprite = THREE.ImageUtils.loadTexture( "images/particle5.png" );
+
+				for ( i = 0; i < 10; i ++ ) {
+					var vertex = new THREE.Vector3();
+					particlesArray.push(vertex);
+					thrustGeometry.vertices.push( vertex );
+					colors[ i ] = new THREE.Color( 0xffffff );
+					colors[ i ].setHSL( .05, 1, 0.5 );
+				}
+				thrustGeometry.colors = colors;
+
+				//material = new THREE.ParticleBasicMaterial( { size: 100, map: sprite, vertexColors: true, transparent: true,opacity:.8 } );
+				thrustMaterial = new THREE.ParticleBasicMaterial({
+						size: 20,
+						map: sprite,
+						blending: THREE.AdditiveBlending,
+						depthTest: false,
+						transparent: true,
+						vertexColors: true });
+				
+				thrustMaterial.color.setHSL( 1.0, 0.2, 0.7 );
+				particles = new THREE.ParticleSystem( thrustGeometry, thrustMaterial );
+				particles.position.y=5;
+				//particles.position.z=-600;
+				particles.sortParticles = true;
+			
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setClearColor( 0x000000, 1 );
+				renderer.sortElements = true;
+				container.appendChild( renderer.domElement );
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.bottom = '0px';
+				//stats.domElement.style.right = '0px';
+				
+				container.appendChild( stats.domElement );
+
+				//Assign events
+				document.addEventListener("mousedown", mousedown);
+				document.addEventListener("mouseup", mouseup);
+				//Also clear the interval when user leaves the window with mouse
+				document.addEventListener("mouseout", mouseup);
+				
+				//document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				//document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				//document.addEventListener( 'touchmove', mousedown, false );
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+
+			var mousedownID = -1;  //Global ID of mouse down interval
+			function mousedown(event) {
+				event.preventDefault();
+			  if(mousedownID==-1)  //Prevent multimple loops!
+				 mousedownID = setInterval(function(evt){
+					mouseXOnMouseDown = event.clientX - windowHalfX;
+					targetRotationOnMouseDown = targetRotation;
+					createBullet(playerEntity);
+				 }, 80 /*execute every 100ms*/);
+			 }
+			function mouseup(event) {
+			   if(mousedownID!=-1) {  //Only stop if exists
+				 clearInterval(mousedownID);
+				 mousedownID=-1;
+			   }
+			}
+			function onWindowResize() {
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+			document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+			function onDocumentMouseMove( event ) {
+				//mouseX = event.clientX - windowHalfX;
+				//targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+				//console.log(event);
+				playerEntity.position.x = event.clientX - windowHalfX ;
+				playerEntity.position.y =-1*(event.clientY - windowHalfY -100) ;
+			}
+			function animate() {
+				timer = setTimeout(spawnEnemy,3000);
+			
+				var i = particlesArray.length;
+				while(i--){
+					if(	particlesArray[i].y <-10){
+						particlesArray[i].x += Math.random() < 0.5 ? -2 : 2;
+					}
+					particlesArray[i].y -= 3; 
+					//Math.floor(Math.random() * 10) + 1;
+					if((Math.floor(Math.random()*100))%2 ==0){
+						particlesArray[i].y=0;
+						particlesArray[i].x=0;
+					}
+				}
+			
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+			}
+		
+						
+			function render() {
+				//update health bar 
+				$(".healthBar").css("height",3 * Math.floor(playerEntity.health));
+				$(".healthLabel").html( Math.floor(playerEntity.health) + "%");
+				explosionMaterial.uniforms[ 'time' ].value = .00045 * ( Date.now() - start );
+				delta = speed * clock.getDelta();
+				
+				//update space background
+				parent.getObjectByName("skybox").rotation.x -= .001;
+				parent.getObjectByName("skyboxTop").rotation.x -= .007;
+				//skyboxTop
+				
+				for (var i = _EnemyListObject3D.length-1; i >= 0; i--) {
+					_EnemyListObject3D[i].translateY(speed * _EnemyListObject3D[i].ray.direction.y);
+					if (_EnemyListObject3D[i].position.y < -1500 ) { //or bullet hit something
+						scene.remove(_EnemyListObject3D[i]);
+						_EnemyListObject3D.splice(i, 1);
+						_EnemyList.splice(i, 1);
+						
+						continue;
+					}	
+					//shoot at the player
+					if( _EnemyListObject3D.length < 10 && _EnemyListObject3D[i].position.y <100 && _EnemyListObject3D[i].position.y > -50)
+					{
+						//console.log(_EnemyListObject3D[i].position);
+						createEnemyBullet(_EnemyListObject3D[i],_EnemyListObject3D[i].getObjectByName("mesh"), _EnemyListObject3D[i].position);
+					}
+					
+				}
+				
+					//Player and enemyFighter collision Detection 
+					//bullet collision detection
+					if(playerEntity != null){
+					var playerMesh = playerEntity.getObjectByName("hitbox");
+					//	console.log(playerMesh);
+					var originPoint =  playerEntity.position.clone(); 
+					//	var playerMesh = playerEntity.children[0];
+					if(playerMesh != null)
+					{
+						//enemy fighter hits player
+						/*for (var vertexIndex = 0; vertexIndex < playerMesh.geometry.vertices.length; vertexIndex++)
+						{		
+							var localVertex = playerMesh.geometry.vertices[vertexIndex].clone();
+							var globalVertex = localVertex.applyMatrix4( playerMesh.matrix );
+							var directionVector = globalVertex.sub( playerEntity.position );
+							
+							var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+							var collisionResults = ray.intersectObjects( _EnemyList );
+							if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+							{
+								 for (var index = 0; index <  collisionResults.length; index++) {  
+									var obj = collisionResults[index].object;
+									for (var j = _EnemyList.length-1; j >= 0; j--) {
+										var enemy = _EnemyList[j];
+										if(enemy.id ==obj.id){ 
+											scene.remove(_EnemyListObject3D[j]);
+											_EnemyListObject3D.splice(j, 1);
+											_EnemyList.splice(j, 1);
+											
+											var expClone = expMesh.clone();
+											expClone.position.set(playerEntity.position.x,playerEntity.position.y,playerEntity.position.z);
+											expClone.scale.set(2,2,2);
+											expClone.rotation.y = rand(1,180);
+											expClone.rotation.x = rand(2,180);
+											expClone.rotation.z = rand(1,180);
+											expList.push(expClone);
+											scene.add(expClone);
+											scene.remove(playerEntity);
+											
+											playerEntity = null;spawnPlayer();
+											continue;
+										}
+									}
+								}
+								
+								continue;
+							}
+						}*/
+						//enemy bullet hit player
+						for (var vertexIndex = 0; vertexIndex < playerMesh.geometry.vertices.length; vertexIndex++)
+						{		
+							var localVertex = playerMesh.geometry.vertices[vertexIndex].clone();
+							var globalVertex = localVertex.applyMatrix4( playerMesh.matrix );
+							var directionVector = globalVertex.sub( playerEntity.position );
+							
+							var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+							var collisionResults = ray.intersectObjects( Ebullets );
+							if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+							{
+								 for (var index = 0; index <  collisionResults.length; index++) {  
+									var obj = collisionResults[index].object;
+									for (var j = Ebullets.length-1; j >= 0; j--) {
+										var enemy = Ebullets[j];
+										
+										if(enemy.id ==obj.id ){ 
+											//scene.remove(_EnemyListObject3D[j]);
+									
+										//console.log(playerEntity.health);
+										//player dies record score if it is highest and reset 
+										if(playerEntity.health < 0){
+											if(highestScore< score){
+												highestScore = score;
+												$('#score').html("Highest Score:" + highestScore);
+												
+											}
+											score = 0;
+											var expClone = expMesh.clone();
+											expClone.position.set(Ebullets[j].position.x,Ebullets[j].position.y,Ebullets[j].position.z);
+											expClone.scale.set(2,2,2);
+											expClone.rotation.y = rand(1,180);
+											expClone.rotation.x = rand(2,180);
+											expClone.rotation.z = rand(1,180);
+											expList.push(expClone);
+											scene.add(expClone);
+											
+											
+										//	Ebullets.splice(i, 1);
+											scene.remove(playerEntity);
+											scene.remove(Ebullets[j]);
+											Ebullets.splice(j, 1);
+											playerEntity = null;spawnPlayer();
+											continue;
+											}else{
+											playerEntity.health-= 5;
+											scene.remove(Ebullets[j]);
+											Ebullets.splice(j, 1);
+										}
+										}
+									}
+								}
+						
+								continue;
+							}
+						}
+						
+						
+					}
+				}
+			
+				
+				// Update bullets. Walk backwards through the list so we can remove items.
+				//for (var i = bullets.length-1; i >= 0; i--) {
+				var i = bullets.length;
+				while(i--){
+					var b = bullets[i], p = b.position, d = b.ray.direction;
+					if (!hit) {
+						b.translateY(speed * d.y);
+						b.translateX(speed * d.x);
+					}
+					if (b.position.y > 700 ) { //or bullet hit something
+						scene.remove(b);
+						bullets.splice(i, 1);
+						continue;
+					}
+					
+					//bullet collision detection
+					var originPoint = b.position.clone(); 
+					for (var vertexIndex = 0; vertexIndex < b.geometry.vertices.length; vertexIndex++)
+					{		
+						var localVertex = b.geometry.vertices[vertexIndex].clone();
+						var globalVertex = localVertex.applyMatrix4( b.matrix );
+						var directionVector = globalVertex.sub( b.position );
+						
+						var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+						var collisionResults = ray.intersectObjects( _EnemyList );
+						if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+							{	
+								scene.remove(b);
+								var expClone = expMesh.clone();
+								expClone.position.set(b.position.x,b.position.y,b.position.z);
+								expClone.scale.set(2,2,2);
+								expClone.rotation.y = rand(1,180);
+								expClone.rotation.x = rand(2,180);
+								expClone.rotation.z = rand(1,180);
+								expList.push(expClone);
+								scene.add(expClone);
+							
+								bullets.splice(i, 1);
+								for (var index = 0; index <  collisionResults.length; index++) {  
+									var obj = collisionResults[index].object;
+									for (var j = _EnemyList.length-1; j >= 0; j--) {
+										var enemy = _EnemyList[j];
+										if(enemy.id ==obj.id){ 
+												scene.remove(_EnemyListObject3D[j]);
+											_EnemyListObject3D.splice(j, 1);
+											_EnemyList.splice(j, 1);
+											//continue;
+										}
+									}
+								score+=10;
+								//continue;
+								
+								}
+							}
+					}	
+					
+				}
+				
+				// Update bullets. Walk backwards through the list so we can remove items.
+				for (var i = Ebullets.length-1; i >= 0; i--) {
+					var b = Ebullets[i], p = b.position, d = b.ray.direction;
+						if (!hit) {
+						b.translateY(speed * d.y);
+						b.translateX(speed * d.x);
+						
+					}if (b.position.y < -700 ) { //or bullet hit something
+						scene.remove(b);
+						Ebullets.splice(i, 1);
+						continue;
+					}
+				}
+				
+				//explosion
+				for (var i = expList.length-1; i >= 0; i--) {
+					var b = expList[i];
+					if (b.scale.x > 6 ) { //or bullet hit something
+						expList.splice(i, 1);
+						scene.remove(b);
+						continue;
+					}	else{
+						b.scale.set(b.scale.x+=.1,b.scale.y+=.1,b.scale.z+=.1);
+						b.material.transparent = true;
+					}
+				}
+				$('#player1').html("Player 1(You) : " +	score);
+				renderer.clear();	
+				//camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+				originPoint =null;
+			}
+			function rand(min, max) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+			function spawnPlayer(){
+				//Player Fighter Model 
+				//loading Fighter Texture
+				var fighterTexture = new THREE.Texture();
+				var loader = new THREE.ImageLoader();
+				loader.addEventListener( 'load', function ( event ) {
+					fighterTexture.image = event.content;
+					fighterTexture.needsUpdate = true;
+				} );
+				loader.load( 'models/F01_512_RED.jpg' );
+				var hitboxMaterial =new THREE.MeshNormalMaterial({	transparent: true,opacity: 0 });
+			
+				//loading Fighter Model
+				playerEntity = new THREE.Object3D();
+				scene.add(playerEntity);
+				var loader = new THREE.OBJLoader();
+				loader.addEventListener( 'load', function ( event ) {
+					var spaceFighter = event.content;
+					spaceFighter.traverse( function ( child ) {
+						if ( child instanceof THREE.Mesh ) {
+							child.material.map = fighterTexture;
+						}
+					} );
+					spaceFighter.name = "spaceFighter";
+					spaceFighter.position.x = 0;
+					spaceFighter.position.y = 30;
+					spaceFighter.position.z = 0;
+					spaceFighter.rotation.x=1.5708;
+					spaceFighter.scale.set(13,13,13);
+					var sphere = new THREE.Mesh(new THREE.SphereGeometry(11, 1,1,1,1,1 ), hitboxMaterial);
+					sphere.position.z = 50;
+					sphere.position.y = 50;
+					sphere.scale.set(8,1,2);
+					sphere.name ="hitbox";
+					playerEntity.add(sphere);
+					playerEntity.position.y = -1 *((window.innerHeight / 2)-200);	
+					playerEntity.add(spaceFighter);
+					playerEntity.add(particles);
+					playerEntity.health = 100;
+				});
+				loader.load( 'models/spaceship.obj' );
+				
+			}
+			function spawnEnemy(){
+				if(_EnemyList.length<numberOfEnemy){
+					//	console.log(window.innerWidth/2 - 200);
+					var numX = rand(0,(window.innerWidth/2 - 400)) + 1; // this will get a number between 1 and 99;
+					numX *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+					var spacing = (100* (Math.floor(Math.random()*2) == 1 ? 1 : -1));
+					//console.log(spacing);
+					var i = 1;
+					while(i--){
+						var EnemyEntity = new THREE.Object3D();
+						EnemyEntity.name="enemy";
+						var mesh = new THREE.Mesh(EnemyFighterMesh.geometry,EnemyMaterial);
+								mesh.position.x =numX+=spacing;
+								mesh.position.y = 800;
+								mesh.position.z = 0;
+								mesh.rotation.x=1.5708;
+								mesh.scale.set(13,13,13);
+								mesh.name="mesh";
+						EnemyEntity.add(mesh);
+						
+						var vector = playerEntity.position.clone();
+						vector.y=-1050;
+						EnemyEntity.ray = new THREE.Ray(EnemyEntity.position,vector.sub(playerEntity.position).normalize());
+						_EnemyList.push(mesh);
+						_EnemyListObject3D.push(EnemyEntity);
+						scene.add(EnemyEntity);
+						
+						mesh= null;
+						vector= null;
+					}
+				}
+				
+				numX=null;
+				EnemyEntity =null;
+				clearTimeout(timer);
+				timer = null;
+			}
+			
+
+
+			function createEnemyBullet(obj,mesh,position) {
+				//@TODO should invest some time to implement a pooling for spawning bullets so it will be less laggy 
+				//although it is running very smooth after the inital load. 
+				//console.log(obj.position);
+				if (obj === undefined) {
+					obj = cam;
+				}
+				var sphere = new THREE.Mesh(new THREE.CubeGeometry(10, 10,20,1,1,1 ), bulletMaterialE);
+				sphere.position.set(mesh.position.x, mesh.position.y -60+ position.y , mesh.position.z );
+			
+				var vector = playerEntity.position.clone();
+				//vector.y=-1000;
+				sphere.ray = new THREE.Ray(
+					sphere.position,
+					vector.sub(sphere.position).normalize()
+				);
+				sphere.owner = obj;
+				Ebullets.push(sphere);
+				scene.add(sphere);
+				sphere = null;
+				vector = null;
+				//return sphere;
+			}
+			function createBullet(obj) {
+				var sphere = new THREE.Mesh(new THREE.CubeGeometry(40, 40,20,1,1,1 ), bulletMaterial);
+				sphere.position.set(obj.position.x, obj.position.y +20, obj.position.z -10);
+			
+				var vector = obj.position.clone();
+					vector.y=4000;
+					sphere.ray = new THREE.Ray(
+						obj.position,
+						vector.sub(obj.position).normalize()
+					);
+				sphere.owner = obj;
+				bullets.push(sphere);
+				scene.add(sphere);
+				sphere = null;
+				vector = null;
+				//return sphere;
+			}
+			
+		</script>
+	</body>
+</html>
