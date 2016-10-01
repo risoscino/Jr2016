@@ -1,9 +1,9 @@
 a.  CSS 3
-b.  HTML / HTML5 4
+b.  HTML / HTML5 3
 c.  JavaScript
-		i.    JavaScript - 4
-		ii.   Bootstrap - 4
-		iii.  jQuery - 4
+		i.    JavaScript - 3
+		ii.   Bootstrap - 3
+		iii.  jQuery - 3
 		iv.   Angular - 1
 		v.    Unify - 0
 d.  Linux
@@ -16,7 +16,7 @@ e.  .NET
 		i.   C# - 1
 		ii.  VB - 1
 f.  PHP
-		i.    PHP 5.x - 4
+		i.    PHP 5.x - 3
 		ii.   CTFr Framework - 0
 		iii.  Codeigniter - 1
 		iv.   Drupal - 1
@@ -24,6 +24,6 @@ f.  PHP
 g.  Python - 1
 h.  Ruby on Rails - 1
 i.  SQL
-		i.    SQL - 4
+		i.    SQL - 3
 		ii.   Stored Procedures - 1
 		iii.  Views - 1
