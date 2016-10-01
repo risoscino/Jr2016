@@ -23,6 +23,8 @@ div > span {
 div.box {
 	background-color: #FFA500;
 	border: 3px solid #0000FF;
+	border-radius: 12px;
+	box-shadow: 8px 8px #A9A9A9;
 	color: #0000FF;
 	font-weight: bold;
 	height: 100px;
@@ -33,7 +35,7 @@ div.box {
 div#box1 {
 	background-color: #FFA500;
 	border: 3px solid #0000FF;
-	box-shadow: 8px 8px #B6732F inset;
+	box-shadow: 7px 7px #B6732F inset;
 	font-weight: bold;
 	height: 100px;
 	margin-left: 30px;
@@ -41,12 +43,7 @@ div#box1 {
 }
 
 div#box1 > span {
-	color: black;
-}
-
-div#box2 {
-	border-radius: 12px;
-	box-shadow: 8px 8px #A9A9A9;
+	color: #000000;
 }
 
 div#box2 > span {
@@ -54,8 +51,6 @@ div#box2 > span {
 }
 
 div#box3 {
-	border-radius: 12px;
-	box-shadow: 8px 8px #A9A9A9;
 	margin-bottom: 30px;
 }
 
