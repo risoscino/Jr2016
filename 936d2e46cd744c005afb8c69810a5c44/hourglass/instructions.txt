@@ -1,0 +1,3 @@
+Run the following command in the Terminal or Command Prompt to access the program:
+
+"php hourglass draw"
