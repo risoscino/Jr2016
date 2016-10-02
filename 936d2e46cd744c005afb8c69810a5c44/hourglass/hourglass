@@ -7,6 +7,6 @@ use Symfony\Component\Console\Application;
 
 $app = new Application();
 
-$app->add(new GenerateHourglassCommand());
+$app->add(new DrawHourglassCommand());
 
 $app->run();
