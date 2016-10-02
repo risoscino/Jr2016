@@ -50,7 +50,7 @@ class GenerateHourglassCommand extends Command
             $question1 = new Question('Enter height (minimum-2): ', 2);
             $height = $helper->ask($input, $output, $question1);
 
-            //check the height to ensure it's at least 2
+            //check height to ensure it is 2 or greater
             if ($height < 2) {
                 $output->writeln('<error>Size must be at least 2. Please try again.</error>');
                 continue;
@@ -77,7 +77,7 @@ class GenerateHourglassCommand extends Command
             $question2 = new Question('Enter capacity (1-100%): ', 1);
             $capacity = $helper->ask($input, $output, $question2);
 
-            //check capacity to ensure if falls within 1-100 range
+            //check capacity to ensure it falls within 1-100 range
             if ($capacity < 1 || $capacity > 100) {
                 $output->writeln('<error>Capacity must be in the 1-100% range. Please try again.</error>');
                 continue;
