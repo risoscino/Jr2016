@@ -1,0 +1,16 @@
+<div id="detailWrapper">
+    
+    <section class="detailSection">
+        <a ui-sref="list" class="backLink">
+            BACK    
+        </a>
+        <div class="apartmentDetail">
+            <p>{{apartment.name}}</p>
+            <p>Popularity: {{apartment.popularity}}</p>
+            <p>Price: {{apartment.price}}</p>
+            <hr>
+            <p>{{apartment.description}}</p>
+        </div>
+    </section>
+     <img ng-src="./files/{{apartment.image}}" id="bg">  
+</div>

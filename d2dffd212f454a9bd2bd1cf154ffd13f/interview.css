@@ -1,0 +1,41 @@
+body {
+    color: #87CEEB;
+    font-family: Helvetica, sans-serif;
+}
+
+div {
+    text-align: center;
+    margin-bottom: 80px;
+    margin-left: 30px;
+}
+
+#box1 {
+    width: 100px;
+    height: 100px;    
+    background-color: #FFA500;
+    color: black;
+    border-color: blue;
+    border-style: solid;
+    border-width: 3px;
+    box-shadow: 7px 7px #996300 inset;	
+}
+
+.box {
+    width: 100px;
+    height: 100px;    
+    background-color: #FFA500;
+    color: black;
+    border-color: blue;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 10%;
+    box-shadow: 7px 7px #999999;	
+}
+
+#box2 {
+    color: red;
+}
+
+#box3 {
+    color: blue;
+}
