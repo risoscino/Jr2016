@@ -1,0 +1,31 @@
+Skills
+a.	CSS: 2
+b.	HTML / HTML5: 2
+c.	Javascript: 1.4 average
+i.	Javascript: 2
+ii.	Bootstrap: 1
+iii.	Jquery: 2
+iv.	Angular: 1
+v.	Unify: 1
+d.	Linux: 1.4 average
+i.	Command line: 2
+ii.	Shell Scripting: 2
+iii.	Piped commands: 2
+iv.	Apache Configuration: 1
+v.	NGINX Configuration: 0
+
+e.	.net: 2.5 average
+i.	C#: 3
+ii.	VB: 2
+f.	PHP: 1 average
+i.	PHP 5.x: 2
+ii.	CTFr Framework: 0
+iii.	Codeigniter: 0
+iv.	Drupal: 1
+v.	Slim API Framework: 2
+g.	Python: 2
+h.	Ruby On Rails: 2
+i.	SQL: 1.67 average
+i.	SQL: 2
+ii.	Stored Procedures: 2
+iii.	Views: 1
