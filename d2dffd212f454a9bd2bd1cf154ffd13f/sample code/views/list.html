@@ -1,0 +1,48 @@
+<div id="listWrapper" >
+    <header>
+        {{searchTerm}}: {{apartments.length}} Apartments
+    </header> 
+
+    <section id="listSection">
+       <div id="sortButtonWrapper">
+            <button ng-click="sort_by('popularity')" ng-class="{activated: sortingOrder === 'popularity', reverse: reverse}">
+                Popularity        
+            </button>
+            <button ng-click="sort_by('price')" ng-class="{activated: sortingOrder === 'price', reverse: reverse}">
+                Price     
+            </button>           
+       </div>
+
+        <ul>
+            <li ng-repeat="apartment in apartments | orderBy:sortingOrder:reverse | startFrom:currentPage*pageSize | limitTo:pageSize">
+                <a ui-sref="detail({name: apartment.name})">
+                    <section class="apartmentSectionWrapper">
+                        <img ng-src="./files/{{apartment.image}}">  
+                        <div class="apartmentInfo">
+                            <div class="infoArea">
+                                <h6>{{apartment.name}}</h6>
+                                <hr>
+                                <p>{{apartment.description}}</p>
+                            </div>    
+                            <div class="priceArea">
+                                <span>From</span>
+                                <span class="bigPrice"> ${{apartment.price}}</span>  
+                                <p>USD / Month</p>       
+                            </div>  
+                        </div>    
+                    </section>
+                </a>
+            </li>
+        </ul>
+        
+        <div id="pageButtonWrapper">
+            <button ng-hide="currentPage == 0" ng-click="changePage(false)">
+                Previous
+            </button>
+            {{currentPage+1}}/{{numberOfPages()}}
+            <button ng-hide="currentPage >= apartments.length/pageSize - 1" ng-click="changePage(true)">
+                Next
+            </button>            
+       </div>  
+    </section>        
+</div>    

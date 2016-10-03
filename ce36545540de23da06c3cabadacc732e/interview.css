@@ -1,0 +1,70 @@
+/* interview.css
+* Author: Christopher J. Lafond
+ */
+body {
+    background-color: white;
+}
+
+h1 {
+    color: lightblue;
+    text-align: left;
+    font-size: 40px;
+}
+
+h2 {
+    text-align: left;
+    color: lightblue;
+}
+
+p {
+    font-family: arial;
+    color: lightblue;
+    font-size: 16px;
+    margin-bottom:1.5em
+}
+
+div {
+  position: relative;
+  top: 0%;
+  margin: 0 auto;
+  height: 5vh;
+  width: 5vh;
+  color: lightblue;
+  background: #ffffff;
+}
+
+#box1{
+  width:150px;
+	height:150px;
+  float: left;
+  background-color: orange;
+  border: solid 3px blue;
+  box-shadow: inset 10px 10px 0px 0px rgba(0,0,0,0.45);
+  text-align: center;
+  color: black;
+  margin-bottom:3em;
+  margin-left :3em;
+}
+
+#box2{
+  color: red;
+}
+
+#box3{
+  color: blue;
+}
+
+.box{
+  width:150px;
+  height:150px;
+  clear:left;
+  float: left;
+  background-color: orange;
+  border-radius: 25px;
+  border: solid blue;
+  border-width: medium;
+  box-shadow: 10px 10px 2px 0px rgba(0,0,0,0.25);
+  text-align: center;
+  margin-bottom:3em;
+  margin-left:3em;
+}
