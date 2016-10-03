@@ -1,3 +1,11 @@
-Enter the following command in the Terminal or Command Prompt to run the program:
+This program was built using the Symfony Console component (installed via Composer).
 
-"php hourglass draw"
+Enter the following command in the Terminal or Command Prompt to run the program:
+- "php hourglass draw"
+
+My work is included in the following files:
+- composer.json
+- hourglass
+- src/**
+
+The composer.lock file and vendor directory were created during the component installation.
