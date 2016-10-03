@@ -1,0 +1,27 @@
+body {
+	color: #87CEEB;
+}
+div {
+	text-align: center;
+}
+*[id^='box'] {
+	display: block;
+	height: 1.125in;
+	width: 1.125in;
+	border: 1px solid #0000FF;
+	background-color: #FFA500;
+	box-shadow: 0.125in 0.125in #999999;
+}
+.box {
+	border-radius: 15px;
+}
+#box1 {
+	color: #000000;
+	box-shadow: inset 0.125in 0.125in #996300;
+}
+#box2 {
+	color: #FF0000;
+}
+#box3 {
+	color: #0000FF;
+}
