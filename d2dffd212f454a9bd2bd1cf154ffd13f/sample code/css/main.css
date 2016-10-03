@@ -1,0 +1,254 @@
+@import 'https://fonts.googleapis.com/css?family=Raleway';
+
+html,body{
+    position: relative;
+    width:100%;
+    height:100%;
+    margin: 0;
+    padding: 0; 
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.weheader{
+    background-color: black;
+    color: orange;
+    padding: 0;
+    margin: 0;
+}
+
+.weheader h1{
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+    padding: 10px 0px 5px 10px; 
+    margin: 0;
+}
+
+.weheader h2{
+    font-weight: normal;
+    color: white;
+    margin: 0;
+    padding: 5px 0px 5px 10px;
+}
+
+main{
+    position: relative;
+    width: 100%;
+}
+
+#listWrapper{
+    position: relative;
+    width: 90%;
+    left: 5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #EFEFEF;
+}
+
+#listWrapper header{
+    padding: 10px;
+    font-weight: bold;
+}
+
+#listSection{
+    position: relative;
+    padding: 10px;
+}
+
+#sortButtonWrapper{
+    margin: 10px 0px;
+    text-align: right;
+}
+
+#sortButtonWrapper button{
+    cursor: pointer;
+    background-color: #EFEFEF;
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: #A1A1A1;    
+}
+
+#sortButtonWrapper button.activated{
+    background-color: #F4AA29;
+    color: black;
+}
+
+#sortButtonWrapper button.activated:after {
+    content: '\25b2';
+}
+
+#sortButtonWrapper button.activated.reverse:after {
+    content: '\25bc';
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+li{
+    margin-bottom: 15px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.apartmentSectionWrapper{
+    position: relative;
+    width: 100%;
+    height: 23vw;
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    align-items:flex-start;
+    background-color: white;
+}
+
+.apartmentSectionWrapper:hover{
+    background-color: #D7D7D7;
+}
+
+.apartmentSectionWrapper > img{
+    width:40%;
+    height: 23vw;
+}
+
+.apartmentSectionWrapper > div{
+    position: relative;
+    width:60%;
+    
+    color: gray;
+    height: 23vw;
+}
+
+.infoArea{
+    padding: 0 10px;
+}
+
+.infoArea h6{
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    padding-top: 10px; 
+    margin: 0;    
+}
+
+.infoArea hr{
+    border: 0;
+    height: 1px;
+    background: grey;
+}
+
+.priceArea{
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0 10px 10px 0;
+    color: #E9AC29;
+}
+
+.priceArea p{
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+.bigPrice{
+    font-size: 36px;
+}
+
+#pageButtonWrapper{
+    margin: 15px 0px 10px 0px;
+    text-align: center;
+}
+
+#pageButtonWrapper button{
+    cursor: pointer;
+    padding: 5px 10px;
+    font-weight: bold;
+    height: 30px;
+    text-align: center;
+    margin: 0 5px;
+    border: none;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#detailWrapper{
+    width: 100%;
+    position: relative;
+}
+
+.detailSection{
+    position: absolute;
+    padding: 20px 10px 10px 10px;
+    font-size: 26px;
+}
+
+.backLink{
+    background-color: black;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.apartmentDetail{
+    color: white;
+    padding-left: 10px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.apartmentDetail > .name{
+    color: yellow;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#bg {
+    min-height: 100%;
+    min-width: 768px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    z-index: -1;
+    filter: grayscale(85%) blur(5px);
+    -webkit-filter: grayscale(85%) blur(5px);
+}
+
+@media screen and (max-width: 768px){
+    img.bg {
+        left: 50%;
+        margin-left: -384px; 
+    }
+    
+    .weheader h1{
+        padding: 10px 0px 10px 10px; 
+    }
+    
+    .weheader h2{
+        display: none;
+    }
+    
+    .apartmentSectionWrapper{
+        display: block;
+        width:100%;
+        height: auto;
+    }
+
+    .apartmentSectionWrapper > img{
+        width:100%;
+        height: auto;
+    }
+
+    .apartmentSectionWrapper > div{
+        width: 100%;
+        height: auto;
+    }
+    
+    .priceArea{
+        text-align: right;
+        position: relative;
+    }
+}
