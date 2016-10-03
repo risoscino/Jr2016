@@ -1,0 +1,24 @@
+5 CSS
+5 HTML / HTML5
+4 Javascript
+4 Bootstrap 
+4 Jquery
+2 Angular
+1 Unify
+4 Linux Command line
+3 Linux Shell Scripting
+2 Linux Piped commands
+5 Apache Configuration
+3 NGINX Configuration
+4 C#.net
+2 VB.net
+5 PHP 5.x
+1 CTFr Framework
+1 Codeigniter
+4 Drupal
+2 Slim API Framework
+3 Python
+1 Ruby On Rails
+5 SQL
+5 SQL Stored Procedures
+5 SQL Views
