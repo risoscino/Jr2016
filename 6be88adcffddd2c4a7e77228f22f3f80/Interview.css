@@ -1,0 +1,52 @@
+ h1 {
+    color: #66CCFF;
+}
+
+ h2 {
+    color: #66CCFF;
+}
+
+ p {
+    
+	color: #66CCFF;
+}
+
+div {
+	text-align:center;
+	color: #33CCFF;
+	margin-bottom:100px ;
+	margin-left:50px;
+}
+
+#box1 {
+	color: black;
+	border-style: solid;
+    border-color: blue;
+	background-color:#ffad33;
+	width: 100px;
+	height: 100px;
+	margin:left;
+	box-shadow: 10px 10px 5px #888888 inset;
+	
+}
+
+#box2{
+	color:red
+}
+
+#box3{
+	color:blue
+}
+
+.box{
+		
+	border-style: solid;
+    border-color: blue;
+	background-color:#ffad33;
+	width: 100px;
+	height: 100px;
+	margin:left;
+	box-shadow: 10px 10px 5px #888888;
+	border: 2px solid red;
+    border-radius: 8px;
+}
