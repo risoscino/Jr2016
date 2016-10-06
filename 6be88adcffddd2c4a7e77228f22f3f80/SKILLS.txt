@@ -1,0 +1,29 @@
+o	CSS             2
+o	HTML / HTML5     2
+o	Javascript      
+	Javascript   2
+	Bootstrap   1
+	Jquery    2
+	Angular  1
+	Unify      1
+o	Linux
+	Command line        2
+	Shell Scripting        1
+	Piped commands    1
+	Apache Configuration 1
+	NGINX Configuration 1
+o	.net
+	C#     2
+	VB     2
+o	PHP
+	PHP 5.x      1
+	CTFr Framework   1
+	Codeigniter   1
+	Drupal  1
+	Slim API Framework   1
+o	Python   2
+o	Ruby On Rails     2
+o	SQL
+	SQL    2
+	Stored Procedures    1
+	Views  1
