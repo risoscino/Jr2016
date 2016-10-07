@@ -1,0 +1,41 @@
+h1 {
+    margin-top: 0;
+    font-size: 80px;
+}
+p,
+h1,
+h2 {
+    color: #87CEEB;
+}
+body > div:first-of-type {
+    text-align: center;
+    margin-bottom: 100px;
+    color: #87CEEB;
+}
+#box1,
+#box2,
+#box3 {
+    width: 150px;
+    height: 150px;
+    border-style: solid;
+    text-align: center;
+    color: black;
+    background-color: #FFA500;
+    margin: 100px 50px;
+    border-color: blue;
+    font-weight: bolder;
+}
+#box1 {
+    box-shadow: inset 8px 8px #996300;
+}
+#box2,
+#box3 {
+    border-radius: 20px;
+    box-shadow: 8px 8px #999999;
+}
+#box2 {
+    color: red;
+}
+#box3 {
+    color: blue;
+}
