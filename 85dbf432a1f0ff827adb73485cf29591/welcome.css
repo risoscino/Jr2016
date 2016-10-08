@@ -1,0 +1,37 @@
+body {
+	font-family: ‘Trebuchet MS’, Helvetica, sans-serif;
+	color:#82CFEB;
+}
+.box {
+	height: 100px;
+	width: 100px;
+	background-color: #FFA339;
+	border-style: solid;
+	border-color: #0720F4;
+	margin-left: 4em;
+}
+#box1 {
+	color:#161A07;
+	--webkit-box-shadow: inset .188em .250em 0px .188em rgba(0,0,0,0.36);
+    -moz-box-shadow: inset .188em .250em 0px .188em rgba(0,0,0,0.36);
+    box-shadow: inset .188em .250em 0px .188em rgba(0,0,0,0.36);
+}
+#box2 {
+	color:#FF3920;
+}
+#box3 {
+	color:#4C43E3;
+}
+#nobox {
+	margin-left:50%;
+}
+.padding {
+	padding-bottom: 4em;
+}
+.boxspan{
+	margin-left: 30%
+}
+.circular-box {
+	box-shadow: .500em .625em #999999;
+	border-radius: 1em;
+}
