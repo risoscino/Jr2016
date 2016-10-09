@@ -1,0 +1,39 @@
+a CSS -          3 Have been using it for 2.5 years
+b HTML/HTML5     3 Have been using it for 2.5 years
+c Javascript
+  i.  Vanilla - 2 Moved away from vanilla for jQuery, and Angular
+ ii. Bootstrap - 3 My favorite design tool ( better then foundation, better then angular design)
+iii. jQuery  - 3 Have been using it to make scripts to modify CSS and HTML
+ iv. Angular - 3 Have been using for 1.5 years
+  v.  Unify - 1
+d Linux 
+  i.   Command Line - 3 prefer Linux/Unix over MDOS
+ ii.  Shell Scripting - 2 Not much oportunity to make many scripts outside personal use
+iii. Piped Commands - 2
+ iv.  Apache Configuration - 3 I use apache for my local configurations
+  v.  NGINX - 2 I have done some work on NGINX servers with redirects, and blocking User-Agents
+
+e .net
+  i. C# 1 
+ ii. VB 1
+f PHP
+  i.  PHP 5.x - 3 Backend Language of choice
+ ii.  CTFr Framework -  0 
+iii. Codeigniter - 1
+ iv.  Drupal - 2  Worked on Drupal sites during 1 year internship
+  v.  SLim API Framework - 1
+g Python - 1
+h ROR - 1
+i SQL
+  i. SQL 3 - MySQL, Oracle
+ ii. Stored Procedures - 1
+iii. Views 2 	
+
+
+I figured this would be a good place to mention a couple things about the two attached projects soft401, and ts-forum.  
+
+Due to being currently employed I am not able to share work I do on a day-to-day basis.
+
+Though I do have attached is my software engineering project soft401. I developed 95% of the project (other 5% was some design by another partner)  This project uses Java back end to communicate with a MySql database,  it uses CSS, HTML, bootstrap, some vanilla javascript, some jQuery, and AngularJs all run on a Tomcat server. It is a study portal for students, were they can use flash cards to study or be tested with, create and modify schedules all with a personalized feel. 
+
+The next project is ts-forum,  it is a forum that I crated for one of my internships where employees could vote and talk with each other about internal projects.  It is written heavily in PHP, and uses CSS and HTML for design,  there is also a couple jQuery scripts used for voting.
